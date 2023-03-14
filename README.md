@@ -192,7 +192,7 @@ pcall(function()
                 if v.Name == Name_Mon then
                     if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid").Health > 0 then
                         stop = false
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,10,0)
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,15,0)
                         wait(.3)
                     end
                 end
@@ -201,10 +201,6 @@ pcall(function()
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame_Wait
             end
         end)
-        hit_sword("Katana")
-        hit_combat("Combat")
-        hit_sword("Shinsen")
-        hit_sword("Nameless Katana")
         spawn(function()
             if not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
                 local Noclip = Instance.new("BodyVelocity")
@@ -225,6 +221,19 @@ end
 end
 end)
 
+spawn(function()
+while wait() do
+if Auto_Farm then
+pcall(function()
+    hit_combat("Combat")
+    wait(.1)
+    hit_sword("Katana")
+    hit_sword("Shinsen")
+    hit_sword("Nameless Katana")
+end)
+end
+end
+end)
 Section:NewKeybind("KeybindText", "KeybindInfo", Enum.KeyCode.Z, function()
 	print("You just clicked the bind")
 end)
