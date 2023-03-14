@@ -5,6 +5,20 @@ local Section = Tab:NewSection("Section Name")
 
 farm = true
 
+function GodMode()
+    for i,v in pairs (game:GetService("Workspace").Players:GetChildren()) do
+        if v.Name == game.Players.LocalPlayer.Name then
+            v.Head.Mesh:Destroy()
+            v.Head.MobGUI:Destroy()
+            v.Head.face:Destroy()
+            v.Race.Mink:Destroy()
+            for i,v in pairs (game:GetService("Workspace").Players[game.Players.LocalPlayer.Name].Race:GetChildren()) do
+                v:Destroy()
+            end
+        end
+    end
+end
+
 function hit_sword(Weapon)
     spawn(function()
         if not game.Players.LocalPlayer.Character:FindFirstChild(Weapon) then
@@ -183,6 +197,7 @@ spawn(function()
 while wait() do
 if Auto_Farm then
 pcall(function()
+    GodMode()
     Check()
     
     if tostring(game.Players.LocalPlayer.PlayerGui.Quests.Main.Position) == "{0, 0}, {0, 0}" and string.find(game.Players.LocalPlayer.PlayerGui.Quests.Main.Handler.QuestObject.Text,"(Level "..string.match(Name_Mon,"%d+")..")") then
