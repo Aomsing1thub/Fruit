@@ -12,7 +12,12 @@ function GodMode()
             v.Head.MobGUI:Destroy()
             v.Head.face:Destroy()
             v.Race.Mink:Destroy()
+            v.Pants:Destroy()
+            v.Shirt:Destroy()
             for i,v in pairs (game:GetService("Workspace").Players[game.Players.LocalPlayer.Name].Race:GetChildren()) do
+                v:Destroy()
+            end
+            if v:IsA "Accessory" then
                 v:Destroy()
             end
         end
