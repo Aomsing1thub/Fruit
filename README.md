@@ -268,16 +268,12 @@ Section:NewKeybind("KeybindText", "KeybindInfo", Enum.KeyCode.Z, function()
 	print("You just clicked the bind")
 end)
 
-Section:NewButton("Random Fruit", "Check", function() -- Buttton
--- game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("3","Beli")
-step = 16
-farm = false
+Section:NewButton("Random Fruit 900K", "Check", function() -- Buttton
+game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("3","Beli")
 end)
 
-Section:NewButton("Random Fruit", "Check", function() -- Buttton
--- game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("3","Beli")
-step = 7
-farm = true
+Section:NewButton("Random Fruit 250K", "Check", function() -- Buttton
+game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("2","Beli")
 end)
 
 Section:NewKeybind("KeybindText", "KeybindInfo", Enum.KeyCode.RightControl, function() -- Key OPEN/CLOSE
