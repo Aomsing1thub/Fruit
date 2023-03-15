@@ -4,10 +4,19 @@ local Tab = Window:NewTab("Main")
 local Section = Tab:NewSection("Section Name")
 
 farm = true
+
 function Delete(v,Name)
     if v.Head:FindFirstChild(Name) then
         v.Head:FindFirstChild(Name):Destroy()
     end
+end
+
+function Tw(v,CF)
+    local Distance = (CF.Position - v.HumanoidRootPart.Position).Magnitude -- จุดที่จะไป Position Only
+    local Speed = 16
+    tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear)
+    tween = tweenService:Create(v.HumanoidRootPart, tweenInfo, {CFrame = CF})
+    tween:Play()
 end
 
 function GodMode()
@@ -116,7 +125,12 @@ function Check()
     elseif Level >= 600 and Level < 800 and farm then
         step = 12
     elseif Level >= 800 and Level < 1000 and farm then
-        step = 13
+        Name = "Anubis the Bone Keeper (Level 800)"
+        if find(Name) and findHealth(Name) then
+            step = 13
+        else
+            step = 12
+        end
     elseif Level >= 1000 and Level < 1100 and farm then
         step = 14
     elseif Level >= 1100 and Level < 1200 and farm then
@@ -133,72 +147,73 @@ function Check()
     if step == 1 then
         Boss = false
         Name_Mon = "Bandit (Level 1)"
-        CFrame_Wait = CFrame.new(-350.4381103515625, 351.5129089355469, 325.9688720703125)
+        CFrame_Wait = CFrame.new(-369.2081604003906, 216.5130157470703, 387.48699951171875)
     elseif step == 2 then
         Boss = true
         Name_Mon = "Bandit Leader (Level 15)"
-        CFrame_Wait = CFrame.new(-369.7712097167969, 282.6755065917969, 554.2888793945312)
+        CFrame_Wait = CFrame.new(-371.2571716308594, 247.01300048828125, 496.6766052246094)
     elseif step == 3 then
         Boss = false
         Name_Mon = "Clown Pirate (Level 30)"
-        CFrame_Wait = CFrame.new(-293.0843200683594, 250.24668884277344, -1447.1566162109375)
+        CFrame_Wait = CFrame.new(-315.8768005371094, 219.99827575683594, -1497.806884765625)
     elseif step == 4 then
         Boss = true
         Name_Mon = "Clown Leader (Level 60)"
-        CFrame_Wait = CFrame.new(-368.898193359375, 229.9982452392578, -1552.44384765625)
+        CFrame_Wait = CFrame.new(-321.23004150390625, 238.9982452392578, -1587.2579345703125)
     elseif step == 5 then
         Boss = false
         Name_Mon = "Caveman (Level 75)"
-        CFrame_Wait = CFrame.new(255.96511840820312, 206.99850463867188, 2118.405029296875)
+        CFrame_Wait = CFrame.new(215.53306579589844, 221.99879455566406, 2216.151123046875)
     elseif step == 6 then
         Boss = false
         Name_Mon = "Monkey (Level 90)"
-        CFrame_Wait = CFrame.new(574.6945190429688, 365.9721374511719, 2391.791015625)
+        CFrame_Wait = CFrame.new(591.8125610351562, 267.9991455078125, 2251.00634765625)
     elseif step == 7 then
         Boss = true
         Name_Mon = "Gorilla (Level 120)"
-        CFrame_Wait = CFrame.new(150.89414978027344, 358.5003662109375, 2518.702392578125)
+        CFrame_Wait = CFrame.new(243.0989532470703, 334.9992980957031, 2430.525390625)
     elseif step == 8 then
         Boss = false
         Name_Mon = "Snow Bandit (Level 200)"
-        CFrame_Wait = CFrame.new(-2320.17236328125, 283.4620361328125, 2290.921630859375)
+        CFrame_Wait = CFrame.new(-2355.30517578125, 252.4988250732422, 2219.086669921875)
     elseif step == 9 then
         Boss = false
         Name_Mon = "Small Yeti (Level 275)"
-        CFrame_Wait = CFrame.new(-2316.49169921875, 613.6150512695312, 2639.348388671875)
+        CFrame_Wait = CFrame.new(-2398.7294921875, 553.5922241210938, 2610.006591796875)
     elseif step == 10 then
         Boss = false
         Name_Mon = "Yeti (Level 350)"
-        CFrame_Wait = CFrame.new(-2716.358154296875, 598.7385864257812, 3070.25537109375)
+        CFrame_Wait = CFrame.new(-2786.235595703125, 552.5003662109375, 3006.614990234375)
     elseif step == 11 then
         Boss = false
         Name_Mon = "Sand Bandit (Level 450)"
-        CFrame_Wait = CFrame.new(-2237.26220703125, 589.4641723632812, -3608.683837890625)
+        CFrame_Wait = CFrame.new(-2153.0302734375, 457.39990234375, -3759.306884765625)
     elseif step == 12 then
         Boss = false
         Name_Mon = "Pharaoh Guard (Level 600)"
-        CFrame_Wait = CFrame.new(-2943.594482421875, 745.7305908203125, -4513.64990234375)
+        CFrame_Wait = CFrame.new(-2937.670654296875, 602.24951171875, -4605.40673828125)
     elseif step == 13 then
         Boss = false
         Name_Mon = "Anubis the Bone Keeper (Level 800)"
-        CFrame_Wait = CFrame.new(-2928.767333984375, 710.3206787109375, -4834.81396484375)
+        CFrame_Wait = CFrame.new(-2968.497802734375, 628.7483520507812, -4785.97216796875)
     elseif step == 14 then
         Boss = false
         Name_Mon = "Sky Bandit (Level 1000)"
-        CFrame_Wait = CFrame.new(2891.716064453125, 1889.7041015625, -5228.427734375)
+        CFrame_Wait = CFrame.new(2824.896728515625, 1837.2039794921875, -5212.48974609375)
     elseif step == 15 then
         Boss = false
         Name_Mon = "High-Level Sky Bandit (Level 1100)"
-        CFrame_Wait = CFrame.new(3335.843017578125, 1994.8367919921875, -5381.94091796875)
+        CFrame_Wait = CFrame.new(3277.7236328125, 1886.7039794921875, -5286.43017578125)
     elseif step == 16 then
         Boss = false
         Name_Mon = "Sky Leader (Level 1200)"
-        CFrame_Wait = CFrame.new(2989.11962890625, 1929.1815185546875, -5449.62841796875)
+        CFrame_Wait = CFrame.new(3083.838134765625, 1825.2039794921875, -5521.16064453125)
     end
 end
 
 Section:NewToggle("Auto", "ToggleInfo", function(state)
 Auto_Farm = state
+Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,50,0)
     if not Auto_Farm then
         repeat wait()
         if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
@@ -206,6 +221,21 @@ Auto_Farm = state
         end
         until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
     end
+end)
+spawn(function()
+while wait() do
+if Auto_Farm then
+pcall(function()
+    for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
+        if v.Name == Name_Mon then
+            if v.Head:FindFirstChild("Handle") then
+                v.Head:FindFirstChild("Handle"):Destroy()
+            end
+        end
+    end
+end)
+end
+end
 end)
 
 spawn(function()
@@ -221,14 +251,18 @@ pcall(function()
             for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
                 if v.Name == Name_Mon then
                     if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid").Health > 0 then
+                        Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,50,0)
                         stop = false
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,15,0)
+                        -- spawn(function()
+                        -- Tw(v,CFrame_Wait)
+                        -- end)
                         wait(.3)
                     end
                 end
             end
             if stop then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame_Wait
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Wait
             end
         end)
     else
