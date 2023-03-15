@@ -54,6 +54,11 @@ function hit_sword(Weapon)
                 game:GetService("ReplicatedStorage").Remotes.M1sDamage:FireServer(Weapon,v)
             end
         end
+        for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
+            if v.Name == Name_Mon then
+                game:GetService("ReplicatedStorage").Remotes.M1sDamage:FireServer(Weapon,v)
+            end
+        end
     end)
 end
 
@@ -63,6 +68,11 @@ function hit_combat(Combat)
             game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild(Combat))
         end
         game:GetService("ReplicatedStorage").Remotes.Mouse1Combat:FireServer(Combat)
+        for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
+            if v.Name == Name_Mon then
+                game:GetService("ReplicatedStorage").Remotes.M1sDamage:FireServer(Combat,v)
+            end
+        end
         for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
             if v.Name == Name_Mon then
                 game:GetService("ReplicatedStorage").Remotes.M1sDamage:FireServer(Combat,v)
@@ -299,19 +309,19 @@ if Auto_Farm then
 pcall(function()
     for i,v in pairs (game.Players.LocalPlayer.Backpack:GetChildren()) do
         if v:IsA "Tool" then
-            if v.Name == "Night katana" then
-                hit_sword("Night katana")
+            if v.Name == "Night Katana" then
+                hit_sword("Night Katana")
             elseif v.Name == "Nameless Katana" and 
-                not game.Players.LocalPlayer.Character:FindFirstChild("Night katana") and
+                not game.Players.LocalPlayer.Character:FindFirstChild("Night Katana") and
                 not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
                 hit_sword("Nameless Katana")
             elseif v.Name == "Shinsen" and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Night katana") and
+                not game.Players.LocalPlayer.Character:FindFirstChild("Night Katana") and
                 not game.Players.LocalPlayer.Character:FindFirstChild("Shinsen") and
                 not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
                 hit_sword("Shinsen") 
             elseif v.Name == "Combat" and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Night katana") and
+                not game.Players.LocalPlayer.Character:FindFirstChild("Night Katana") and
                 not game.Players.LocalPlayer.Character:FindFirstChild("Combat") and
                 not game.Players.LocalPlayer.Character:FindFirstChild("Shinsen") and
                 not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
@@ -322,16 +332,16 @@ pcall(function()
                         if y.Name == "Night katana" then
                             hit_sword("Night katana")
                         elseif y.Name == "Nameless Katana" and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Night katana") and
+                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana") and
                             not game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
                             hit_sword("Nameless Katana")
                         elseif y.Name == "Shinsen" and 
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Night katana") and
+                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana") and
                             not game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") and
                             not game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
                             hit_sword("Shinsen") 
                         elseif y.Name == "Combat" and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Night katana") and
+                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana") and
                             not game.Players.LocalPlayer.Backpack:FindFirstChild("Combat") and
                             not game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") and
                             not game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
