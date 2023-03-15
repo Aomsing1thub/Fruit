@@ -4,21 +4,31 @@ local Tab = Window:NewTab("Main")
 local Section = Tab:NewSection("Section Name")
 
 farm = true
+function Delete(v,Name)
+    if v.Head:FindFirstChild(Name) then
+        v.Head:FindFirstChild(Name):Destroy()
+    end
+end
 
 function GodMode()
     for i,v in pairs (game:GetService("Workspace").Players:GetChildren()) do
         if v.Name == game.Players.LocalPlayer.Name then
-            v.Head.Mesh:Destroy()
-            v.Head.MobGUI:Destroy()
-            v.Head.face:Destroy()
-            v.Race.Mink:Destroy()
-            v.Pants:Destroy()
-            v.Shirt:Destroy()
+            Delete(v,"Mesh")
+            Delete(v,"MobGUI")
+            Delete(v,"face")
+            if v:FindFirstChild("Pants") then
+                v.Pants:Destroy()
+            end
+            if v:FindFirstChild("Shirt") then
+                v.Shirt:Destroy()
+            end
             for i,v in pairs (game:GetService("Workspace").Players[game.Players.LocalPlayer.Name].Race:GetChildren()) do
                 v:Destroy()
             end
-            if v:IsA "Accessory" then
-                v:Destroy()
+            for i,v in pairs (game:GetService("Workspace").Players[game.Players.LocalPlayer.Name]:GetChildren()) do
+                if v:IsA "Accessory" then
+                    v:Destroy()
+                end
             end
         end
     end
