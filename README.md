@@ -329,8 +329,8 @@ pcall(function()
             else
                 for x,y in pairs (game.Players.LocalPlayer.Character:GetChildren()) do
                     if y:IsA "Tool" then
-                        if y.Name == "Night katana" then
-                            hit_sword("Night katana")
+                        if y.Name == "Night Katana" then
+                            hit_sword("Night Katana")
                         elseif y.Name == "Nameless Katana" and
                             not game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana") and
                             not game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
