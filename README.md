@@ -222,21 +222,22 @@ Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0
         until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
     end
 end)
-spawn(function()
-while wait() do
-if Auto_Farm then
-pcall(function()
-    for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
-        if v.Name == Name_Mon then
-            if v.Head:FindFirstChild("Handle") then
-                v.Head:FindFirstChild("Handle"):Destroy()
-            end
-        end
-    end
-end)
-end
-end
-end)
+
+-- spawn(function()
+-- while wait() do
+-- if Auto_Farm then
+-- pcall(function()
+--     for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
+--         if v.Name == Name_Mon then
+--             if v.Head:FindFirstChild("Handle") then
+--                 v.Head:FindFirstChild("Handle"):Destroy()
+--             end
+--         end
+--     end
+-- end)
+-- end
+-- end
+-- end)
 
 spawn(function()
 while wait() do
@@ -296,46 +297,40 @@ spawn(function()
 while wait() do
 if Auto_Farm then
 pcall(function()
-    -- for i,v in pairs (game.Players.LocalPlayer.Backpack:GetChildren()) do
-    --     if v:IsA "Tool" then
-    --         if v.Name == "Nameless Katana" and 
-    --             not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
-    --             hit_sword("Nameless Katana")
-    --         elseif v.Name == "Shinsen" and 
-    --             not game.Players.LocalPlayer.Character:FindFirstChild("Shinsen") and
-    --             not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
-    --             hit_sword("Shinsen") 
-    --         elseif v.Name == "Combat" and
-    --             not game.Players.LocalPlayer.Character:FindFirstChild("Combat") and
-    --             not game.Players.LocalPlayer.Character:FindFirstChild("Shinsen") and
-    --             not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
-    --             hit_combat("Combat")
-    --         else
-    --             for x,y in pairs (game.Players.LocalPlayer.Character:GetChildren()) do
-    --                 if y:IsA "Tool" then
-    --                     if y.Name == "Nameless Katana" then
-    --                         hit_sword("Nameless Katana")
-    --                     elseif y.Name == "Shinsen" and 
-    --                         not game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") and
-    --                         not game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
-    --                         hit_sword("Shinsen") 
-    --                     elseif y.Name == "Combat" and
-    --                         not game.Players.LocalPlayer.Backpack:FindFirstChild("Combat") and
-    --                         not game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") and
-    --                         not game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
-    --                         hit_combat("Combat")
-    --                     end
-    --                 end
-    --             end
-    --         end
-    --     end
-    -- end
-    hit_combat("Combat")
-    wait(.1)
-    hit_sword("Shinsen")
-    hit_sword("Nameless Katana")
-    hit_sword("Katana")
-    wait(.1)
+    for i,v in pairs (game.Players.LocalPlayer.Backpack:GetChildren()) do
+        if v:IsA "Tool" then
+            if v.Name == "Nameless Katana" and 
+                not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
+                hit_sword("Nameless Katana")
+            elseif v.Name == "Shinsen" and 
+                not game.Players.LocalPlayer.Character:FindFirstChild("Shinsen") and
+                not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
+                hit_sword("Shinsen") 
+            elseif v.Name == "Combat" and
+                not game.Players.LocalPlayer.Character:FindFirstChild("Combat") and
+                not game.Players.LocalPlayer.Character:FindFirstChild("Shinsen") and
+                not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
+                hit_combat("Combat")
+            else
+                for x,y in pairs (game.Players.LocalPlayer.Character:GetChildren()) do
+                    if y:IsA "Tool" then
+                        if y.Name == "Nameless Katana" then
+                            hit_sword("Nameless Katana")
+                        elseif y.Name == "Shinsen" and 
+                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") and
+                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
+                            hit_sword("Shinsen") 
+                        elseif y.Name == "Combat" and
+                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Combat") and
+                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") and
+                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
+                            hit_combat("Combat")
+                        end
+                    end
+                end
+            end
+        end
+    end
 end)
 end
 end
