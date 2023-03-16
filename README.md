@@ -567,7 +567,6 @@ end)
 
 Section:NewToggle("Auto Kill", "ToggleInfo", function(state)
     Auto_Kill = state
-    Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,150,0)
     if not Auto_Kill then
         repeat wait()
         if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
@@ -575,6 +574,28 @@ Section:NewToggle("Auto Kill", "ToggleInfo", function(state)
         end
         until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
     end
+end)
+
+Section:NewToggle("Spectate", "ToggleInfo", function(state)
+    sp = state
+    if not Auto_Kill then
+        workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+        repeat wait()
+        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+        end
+        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
+    end
+end)
+
+spawn(function()
+while wait() do
+if sp then
+pcall(function()
+workspace.CurrentCamera.CameraSubject = game.Players[Change(Select)].Character.Humanoid
+end)
+end
+end
 end)
 
 Section:NewButton("Teleport", "Check", function() -- Buttton
