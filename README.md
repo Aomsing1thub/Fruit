@@ -577,6 +577,13 @@ Section:NewToggle("Auto Kill", "ToggleInfo", function(state)
     end
 end)
 
+Section:NewButton("Teleport", "Check", function() -- Buttton
+    if Select == nil then
+    else
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[Change(Select)].Character.HumanoidRootPart.CFrame
+    end
+end)
+
 spawn(function()
 while wait() do
 if Auto_Kill then
