@@ -1,5 +1,5 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("TITLE", "Synapse")
+local Window = Library.CreateLib("[UPDATE 1] Fruit Warriors By. Duck Hub Version 0.1", "Synapse")
 local Tab = Window:NewTab("Main")
 local Section = Tab:NewSection("Section Name")
 
@@ -29,42 +29,42 @@ function Delete(v,Name)
 end
 
 function Tw(v,CF)
-    local Distance = (CF.Position - v.HumanoidRootPart.Position).Magnitude -- จุดที่จะไป Position Only
-    local Speed = 16
-    tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear)
-    tween = tweenService:Create(v.HumanoidRootPart, tweenInfo, {CFrame = CF})
-    tween:Play()
+    -- local Distance = (CF.Position - v.Head.Handle.Position).Magnitude -- จุดที่จะไป Position Only
+    -- local Speed = 16
+    -- tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear)
+    -- tween = tweenService:Create(v.Head.Handle, tweenInfo, {CFrame = CF})
+    -- tween:Play()
+    v.Head.Handle.CFrame = CF
 end
 
 function GodMode()
-    for i,v in pairs (game:GetService("Workspace").Players:GetChildren()) do
-        if v.Name == game.Players.LocalPlayer.Name then
-            Delete(v,"Mesh")
-            Delete(v,"MobGUI")
-            Delete(v,"face")
-            if v:FindFirstChild("Pants") then
-                v.Pants:Destroy()
-            end
-            if v:FindFirstChild("Shirt") then
-                v.Shirt:Destroy()
-            end
-            for i,v in pairs (game:GetService("Workspace").Players[game.Players.LocalPlayer.Name].Race:GetChildren()) do
-                v:Destroy()
-            end
-            for i,v in pairs (game:GetService("Workspace").Players[game.Players.LocalPlayer.Name]:GetChildren()) do
-                if v:IsA "Accessory" then
+    spawn(function()
+        for i,v in pairs (game:GetService("Workspace").Players:GetChildren()) do
+            if v.Name == game.Players.LocalPlayer.Name then
+                Delete(v,"Mesh")
+                Delete(v,"MobGUI")
+                Delete(v,"face")
+                if v:FindFirstChild("Pants") then
+                    v.Pants:Destroy()
+                end
+                if v:FindFirstChild("Shirt") then
+                    v.Shirt:Destroy()
+                end
+                for i,v in pairs (game:GetService("Workspace").Players[game.Players.LocalPlayer.Name].Race:GetChildren()) do
                     v:Destroy()
+                end
+                for i,v in pairs (game:GetService("Workspace").Players[game.Players.LocalPlayer.Name]:GetChildren()) do
+                    if v:IsA "Accessory" then
+                        v:Destroy()
+                    end
                 end
             end
         end
-    end
+    end)
 end
 
-function hit_sword(Weapon)
+function hit(Weapon)
     spawn(function()
-        if game.Players.LocalPlayer.Backpack:FindFirstChild(Weapon) then
-           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild(Weapon))
-        end
         game:GetService("ReplicatedStorage").Remotes.Mouse1Combat:FireServer(Weapon)
         for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
             if v.Name == Name_Mon then
@@ -79,20 +79,12 @@ function hit_sword(Weapon)
     end)
 end
 
-function hit_combat(Combat)
+function hit_player(Weapon)
     spawn(function()
-        if game.Players.LocalPlayer.Backpack:FindFirstChild(Combat) then
-           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild(Combat))
-        end
-        game:GetService("ReplicatedStorage").Remotes.Mouse1Combat:FireServer(Combat)
-        for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
-            if v.Name == Name_Mon then
-                game:GetService("ReplicatedStorage").Remotes.M1sDamage:FireServer(Combat,v)
-            end
-        end
-        for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
-            if v.Name == Name_Mon then
-                game:GetService("ReplicatedStorage").Remotes.M1sDamage:FireServer(Combat,v)
+        game:GetService("ReplicatedStorage").Remotes.Mouse1Combat:FireServer(Weapon)
+        for i,v in pairs (game.Players:GetChildren()) do
+            if v ~= game.Players.LocalPlayer and v.Character.Humanoid.Health > 0 then
+                game:GetService("ReplicatedStorage").Remotes.M1sDamage:FireServer(Weapon,v.Character)
             end
         end
     end)
@@ -119,6 +111,76 @@ end
 function findchar(Name)
     if game.Players.LocalPlayer.Character:FindFirstChild(Name) then
         return true
+    end
+end
+
+function Use()
+    if findback("Night Katana") and not findchar("Night Katana") then
+        if game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana") then
+           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana"))
+        end
+    elseif findback("Nameless Katana") and not findchar("Nameless Katana") then
+        if game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
+           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana"))
+        end
+    elseif findback("Shinsen") and not findchar("Shinsen") then
+        if game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") then
+           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen"))
+        end
+    elseif findback("Katana") and not findchar("Katana") then
+        if game.Players.LocalPlayer.Backpack:FindFirstChild("Katana") then
+           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Katana"))
+        end
+    elseif findback("Black Leg") and 
+        not findchar("Combat") and
+        not findchar("Black Leg") and
+        not findchar("Shinsen") and
+        not findchar("Nameless Katana") and
+        not findchar("Night Katana") and
+        not findchar("Katana") then
+        if game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg") then
+           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg"))
+        end
+    elseif findback("Combat") and 
+        not findchar("Combat") and
+        not findchar("Black Leg") and
+        not findchar("Shinsen") and
+        not findchar("Nameless Katana") and
+        not findchar("Night Katana") and
+        not findchar("Katana") then
+        if game.Players.LocalPlayer.Backpack:FindFirstChild("Combat") then
+           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Combat"))
+        end
+    end
+
+    if Auto_Farm then
+        if findchar("Night Katana") then
+            hit("Night Katana")
+        elseif findchar("Nameless Katana") then
+            hit("Nameless Katana")
+        elseif findchar("Shinsen") then
+            hit("Shinsen")
+        elseif findchar("Katana") then
+            hit("Katana")
+        elseif findchar("Black Leg") then
+            hit("Black Leg")
+        elseif findchar("Combat") then
+            hit("Combat")
+        end
+    elseif Auto_Bounty or Auto_Kill then
+        if findchar("Night Katana") then
+            hit_player("Night Katana")
+        elseif findchar("Nameless Katana") then
+            hit_player("Nameless Katana")
+        elseif findchar("Shinsen") then
+            hit_player("Shinsen")
+        elseif findchar("Katana") then
+            hit_player("Katana")
+        elseif findchar("Black Leg") then
+            hit_player("Black Leg")
+        elseif findchar("Combat") then
+            hit_player("Combat")
+        end
     end
 end
 
@@ -250,9 +312,9 @@ function Check()
     end
 end
 
-Section:NewToggle("Auto", "ToggleInfo", function(state)
-Auto_Farm = state
-Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,50,0)
+Section:NewToggle("Auto Farm", "ToggleInfo", function(state)
+    Auto_Farm = state
+    Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,150,0)
     if not Auto_Farm then
         repeat wait()
         if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
@@ -262,21 +324,91 @@ Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0
     end
 end)
 
--- spawn(function()
--- while wait() do
--- if Auto_Farm then
--- pcall(function()
---     for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
---         if v.Name == Name_Mon then
---             if v.Head:FindFirstChild("Handle") then
---                 v.Head:FindFirstChild("Handle"):Destroy()
---             end
---         end
---     end
--- end)
--- end
--- end
--- end)
+Section:NewToggle("Auto Random Fruit", "ToggleInfo", function(state)
+    Auto_Buy = state
+end)
+
+Section:NewToggle("Auto Farm Bounty", "ToggleInfo", function(state)
+    Auto_Bounty = state
+    if not Auto_Bounty then
+        repeat wait()
+        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+        end
+        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
+    end
+end)        
+
+num = 2
+
+spawn(function()
+while wait() do
+if Auto_Bounty then
+pcall(function()
+    for i,v in pairs (game.Players:GetChildren()) do
+        if i == num then
+            Level = tonumber(string.match(game.Players.LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.AverageLevel.Text,"%d+"))
+            gg = v.Character.Humanoid.Health
+            gg1 = v.Character.Humanoid.Health - Level
+            wait(3)
+            if gg >= gg1 then
+                num = num + 1
+            end
+        end
+    end
+    if num >= Max then
+        num = 2
+    else
+        num = num + 1
+    end
+end)
+end
+end
+end)
+
+spawn(function()
+while wait() do
+if Auto_Bounty then
+pcall(function()
+    GodMode()
+    Use()
+    Max = #game.Players:GetChildren()
+    for i,v in pairs (game.Players:GetChildren()) do
+        if i == num then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0,10,0)
+            if v.Character.Humanoid.Health <= 0 then
+                num = num + 1
+            end
+        end
+    end
+end)
+end
+end
+end)
+
+spawn(function()
+while wait() do
+if Auto_Farm or Auto_Bounty then
+pcall(function()
+    if not game.Players.LocalPlayer.Character["Left Arm"]:FindFirstChild("HakiPart") then
+        game:GetService("VirtualInputManager"):SendKeyEvent(true,106,false,game.Players.LocalPlayer.Character.HumanoidRootPart)
+        game:GetService("VirtualInputManager"):SendKeyEvent(false,106,false,game.Players.LocalPlayer.Character.HumanoidRootPart)
+        wait(.5)
+        if not game.Players.LocalPlayer.Character["Left Arm"]:FindFirstChild("HakiPart") then
+            Defense = string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Defense.Text,"%d+")
+            Strength = string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Strength.Text,"%d+")
+            gg = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.PC.OnScreen.Beli.Text,",","")
+            gg1 = string.gsub(gg,"B$ | ","")
+            Money = tonumber(gg1)
+            if Defense >= 100 and Strength >= 100 and Money >= 100000 then
+                game:GetService("ReplicatedStorage").Remotes.LearnAbilities:FireServer("ArmamentHaki")
+            end
+        end
+    end
+end)
+end
+end
+end)
 
 spawn(function()
 while wait() do
@@ -284,6 +416,7 @@ if Auto_Farm then
 pcall(function()
     GodMode()
     Check()
+    Use()
     
     if tostring(game.Players.LocalPlayer.PlayerGui.Quests.Main.Position) == "{0, 0}, {0, 0}" and string.find(game.Players.LocalPlayer.PlayerGui.Quests.Main.Handler.QuestObject.Text,"(Level "..string.match(Name_Mon,"%d+")..")") then
         spawn(function()
@@ -291,13 +424,16 @@ pcall(function()
             for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
                 if v.Name == Name_Mon then
                     if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid").Health > 0 then
-                        v.Humanoid.WalkSpeed = 0
-                        Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,50,0)
+                        if not v.HumanoidRootPart:FindFirstChild("GGEZ") then
+                            local Noclip = Instance.new("BodyVelocity")
+                            Noclip.Name = "GGEZ"
+                            Noclip.Parent = v.HumanoidRootPart
+                            Noclip.MaxForce = Vector3.new(100000,100000,100000)
+                            Noclip.Velocity = Vector3.new(0,0,0)
+                        end
+                        Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,150,0)
                         stop = false
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,15,0)
-                        spawn(function()
-                        Tw(v,CFrame_Wait)
-                        end)
                         wait(.3)
                     end
                 end
@@ -343,7 +479,7 @@ end)
 
 spawn(function()
 while wait() do
-if Auto_Farm then
+if Auto_Farm or Auto_Bounty or Auto_Kill then
 pcall(function()
     if not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
         local Noclip = Instance.new("BodyVelocity")
@@ -361,39 +497,31 @@ spawn(function()
 while wait() do
 if Auto_Farm then
 pcall(function()
-    if findback("Night Katana") and not findchar("Night Katana") then
-        hit_sword("Night Katana")
-    elseif findback("Nameless Katana") and not findchar("Nameless Katana") then
-        hit_sword("Nameless Katana")
-    elseif findback("Shinsen") and not findchar("Shinsen") then
-        hit_sword("Shinsen")
-    elseif findback("Katana") and not findchar("Katana") then
-        hit_sword("Katana")
-    elseif findback("Combat") and 
-        not findchar("Combat") and
-        not findchar("Shinsen") and
-        not findchar("Nameless Katana") and
-        not findchar("Night Katana") and
-        not findchar("Katana") then
-        hit_combat("Combat")
-    end
-    if findchar("Night Katana") then
-        hit_sword("Night Katana")
-    elseif findchar("Nameless Katana") then
-        hit_sword("Nameless Katana")
-    elseif findchar("Shinsen") then
-        hit_sword("Shinsen")
-    elseif findchar("Katana") then
-        hit_sword("Katana")
-    elseif findchar("Combat") then
-        hit_combat("Combat")
+    for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
+        if v.Name == Name_Mon then
+            if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid").Health > 0 then
+                Tw(v,CFrame_Wait)
+            end
+        end
     end
 end)
 end
 end
 end)
 
-Section:NewKeybind("KeybindText", "KeybindInfo", Enum.KeyCode.Z, function()
+spawn(function()
+while wait() do
+if Auto_Buy then
+pcall(function()
+gg = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.PC.OnScreen.Beli.Text,",","")
+gg1 = string.gsub(gg,"B$ | ","")
+Money = tonumber(gg1)
+    if Money >= 10000000 and Money > 9100000 then
+        game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("3","Beli")
+    end
+end)
+end
+end
 end)
 
 Section:NewButton("Random Fruit 900K", "Check", function() -- Buttton
@@ -406,4 +534,103 @@ end)
 
 Section:NewKeybind("KeybindText", "KeybindInfo", Enum.KeyCode.RightControl, function() -- Key OPEN/CLOSE
 	Library:ToggleUI()
+end)
+
+local Tab = Window:NewTab("Players")
+local Section = Tab:NewSection("Section Name")
+
+function Change(String)
+    Display = {}
+    Name = {}
+    
+    for i,v in pairs(game:GetService("Players"):GetChildren()) do
+       table.insert(Display,v.DisplayName)
+       table.insert(Name,v.Name)
+    end
+    
+    for i,v in pairs (Display) do
+        if String == v then
+            return Name[i]
+        end
+    end
+end
+
+players = {}
+
+for i,v in pairs(game:GetService("Players"):GetChildren()) do
+   table.insert(players,v.DisplayName)
+end
+
+Section:NewDropdown("Select Player", " ", players, function(abc)
+    Select = abc
+end)
+
+Section:NewToggle("Auto Kill", "ToggleInfo", function(state)
+    Auto_Kill = state
+    Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,150,0)
+    if not Auto_Kill then
+        repeat wait()
+        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+        end
+        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
+    end
+end)
+
+spawn(function()
+while wait() do
+if Auto_Kill then
+pcall(function()
+    Use()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[Change(Select)].Character.HumanoidRootPart.CFrame * CFrame.new(0,10,0)
+end)
+end
+end
+end)
+
+local Tab = Window:NewTab("Teleport")
+local Section = Tab:NewSection("Section Name")
+
+Places = {}
+
+for i,v in pairs (game:GetService("Workspace").Map:GetChildren()) do
+    if v:IsA "Folder" then
+        table.insert(Places,v.Name)
+    end
+end
+
+Section:NewDropdown("Select Place", " ", Places, function(abc)
+    Place = abc
+    if Place == "Rookie Town" then
+        GoTo = CFrame.new(-368.315673828125, 217.0130615234375, 283.4286193847656)
+    elseif Place == "Snow Island" then
+        GoTo = CFrame.new(-2206.1171875, 243.498779296875, 2337.36474609375)
+    elseif Place == "Orange Town" then
+        GoTo = CFrame.new(-320.22393798828125, 220.4982452392578, -1414.3162841796875)
+    elseif Place == "Jungle" then
+        GoTo = CFrame.new(491.2817687988281, 267.9991455078125, 2324.74853515625)
+    elseif Place == "Arena  Island" then
+        GoTo = CFrame.new(1577.7603759765625, 206.12889099121094, 1056.0426025390625)
+    elseif Place == "East Hill" then
+        GoTo = CFrame.new(597.1534423828125, 632.1998291015625, -596.9248046875)
+    elseif Place == "North Hill" then
+        GoTo = CFrame.new(-2022.1378173828125, 632.1998291015625, -463.5531005859375)
+    elseif Place == "South Hill" then
+        GoTo = CFrame.new(-1100.102783203125, 392.9499206542969, 1189.421142578125)
+    elseif Place == "Island In The Sky" then
+        GoTo = CFrame.new(2984.09130859375, 1900.71044921875, -5373.017578125)
+    elseif Place == "Fallen Island" then
+        GoTo = CFrame.new(2514.302490234375, 218.40245056152344, -3094.522216796875)
+    elseif Place == "Sky Dungeon" then
+        GoTo = CFrame.new(2287.54248046875, 6413.6943359375, -5288.02685546875)
+    elseif Place == "Desert Island" then
+        GoTo = CFrame.new(-2855.125244140625, 580.549072265625, -4407.7568359375)
+    end
+end)
+
+Section:NewButton("Teleport", "Check", function() -- Buttton
+    if GoTo == nil then
+    else
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = GoTo
+    end
 end)
