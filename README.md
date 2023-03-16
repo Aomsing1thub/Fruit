@@ -561,8 +561,23 @@ for i,v in pairs(game:GetService("Players"):GetChildren()) do
    table.insert(players,v.DisplayName)
 end
 
-Section:NewDropdown("Select Player", " ", players, function(abc)
-    Select = abc
+function GetPlayer(String)
+    local Found = {}
+    local strl = String:lower()
+       for i,v in pairs(game.Players:GetPlayers()) do
+            if v ~= game.Players.LocalPlayer then
+                if v.Name:lower():sub(1, #String) == String:lower() then
+                    table.insert(Found,v.Name)
+                elseif v.DisplayName:lower():sub(1, #String) == String:lower() then
+                    table.insert(Found,v.DisplayName)
+                end
+            end
+       end    
+    return Found[1] 
+end
+
+Section:NewTextBox("Name Players", " ", function(txt)
+    Select = GetPlayer(txt)
 end)
 
 Section:NewToggle("Auto Kill", "ToggleInfo", function(state)
