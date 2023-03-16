@@ -349,9 +349,9 @@ pcall(function()
         if i == num then
             Level = tonumber(string.match(game.Players.LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.AverageLevel.Text,"%d+"))
             gg = v.Character.Humanoid.Health
-            gg1 = v.Character.Humanoid.Health - Level
             wait(3)
-            if gg >= gg1 then
+            gg1 = v.Character.Humanoid.Health - Level
+            if gg <= gg1 then
                 num = num + 1
             end
         end
