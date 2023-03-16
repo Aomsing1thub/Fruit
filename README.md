@@ -347,10 +347,9 @@ if Auto_Bounty then
 pcall(function()
     for i,v in pairs (game.Players:GetChildren()) do
         if i == num then
-            Level = tonumber(string.match(game.Players.LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.AverageLevel.Text,"%d+"))
             gg = v.Character.Humanoid.Health
-            wait(3)
-            gg1 = v.Character.Humanoid.Health - Level
+            wait(2)
+            gg1 = v.Character.Humanoid.Health
             if gg <= gg1 then
                 num = num + 1
             end
@@ -358,8 +357,6 @@ pcall(function()
     end
     if num >= Max then
         num = 2
-    else
-        num = num + 1
     end
 end)
 end
@@ -434,7 +431,6 @@ pcall(function()
                         Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,150,0)
                         stop = false
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,15,0)
-                        wait(.3)
                     end
                 end
             end
