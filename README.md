@@ -2,6 +2,7 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHept
 local Window = Library.CreateLib("TITLE", "Synapse")
 local Tab = Window:NewTab("Main")
 local Section = Tab:NewSection("Section Name")
+
 local GC = getconnections or get_signal_cons
 if GC then
 	for i,v in pairs(GC(game.Players.LocalPlayer.Idled)) do
@@ -18,6 +19,7 @@ else
 		VirtualUser:ClickButton2(Vector2.new())
 	end)
 end
+
 farm = true
 
 function Delete(v,Name)
@@ -60,8 +62,8 @@ end
 
 function hit_sword(Weapon)
     spawn(function()
-        if not game.Players.LocalPlayer.Character:FindFirstChild(Weapon) then
-            game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild(Weapon))
+        if game.Players.LocalPlayer.Backpack:FindFirstChild(Weapon) then
+           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild(Weapon))
         end
         game:GetService("ReplicatedStorage").Remotes.Mouse1Combat:FireServer(Weapon)
         for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
@@ -79,8 +81,8 @@ end
 
 function hit_combat(Combat)
     spawn(function()
-        if not game.Players.LocalPlayer.Character:FindFirstChild(Combat) then
-            game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild(Combat))
+        if game.Players.LocalPlayer.Backpack:FindFirstChild(Combat) then
+           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild(Combat))
         end
         game:GetService("ReplicatedStorage").Remotes.Mouse1Combat:FireServer(Combat)
         for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
@@ -104,6 +106,18 @@ end
 
 function findHealth(NameMon)
     if Workspace.Mobs:FindFirstChild(NameMon):FindFirstChild("Humanoid").Health > 0 then
+        return true
+    end
+end
+
+function findback(Name)
+    if game.Players.LocalPlayer.Backpack:FindFirstChild(Name) then
+        return true
+    end
+end
+
+function findchar(Name)
+    if game.Players.LocalPlayer.Character:FindFirstChild(Name) then
         return true
     end
 end
@@ -304,6 +318,30 @@ end
 end)
 
 spawn(function()
+while task.wait() do
+if Auto_Farm then
+pcall(function()
+    for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
+        if v.Name == Name_Mon then
+            if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid").Health > 0 then
+                if v.HumanoidRootPart:FindFirstChild("Hit1") then
+                    v.HumanoidRootPart:FindFirstChild("Hit1"):Destroy()
+                elseif v.HumanoidRootPart:FindFirstChild("Hit2") then
+                    v.HumanoidRootPart:FindFirstChild("Hit2"):Destroy()
+                elseif v.HumanoidRootPart:FindFirstChild("Hit3") then
+                    v.HumanoidRootPart:FindFirstChild("Hit3"):Destroy()
+                elseif v.HumanoidRootPart:FindFirstChild("Hit4") then
+                    v.HumanoidRootPart:FindFirstChild("Hit4"):Destroy()
+                end
+            end
+        end
+    end
+end)
+end
+end
+end)
+
+spawn(function()
 while wait() do
 if Auto_Farm then
 pcall(function()
@@ -323,73 +361,39 @@ spawn(function()
 while wait() do
 if Auto_Farm then
 pcall(function()
-    for i,v in pairs (game.Players.LocalPlayer.Backpack:GetChildren()) do
-        if v:IsA "Tool" then
-            if v.Name == "Night Katana" then
-                hit_sword("Night Katana")
-            elseif v.Name == "Nameless Katana" and 
-                not game.Players.LocalPlayer.Character:FindFirstChild("Night Katana") and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
-                hit_sword("Nameless Katana")
-            elseif v.Name == "Shinsen" and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Night Katana") and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Shinsen") and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
-                hit_sword("Shinsen")
-            elseif v.Name == "Katana" and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Night Katana") and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Shinsen") and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Katana") and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
-                hit_sword("Katana")
-            elseif v.Name == "Combat" and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Night Katana") and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Combat") and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Shinsen") and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Katana") and
-                not game.Players.LocalPlayer.Character:FindFirstChild("Nameless Katana") then
-                hit_combat("Combat")
-            else
-                for x,y in pairs (game.Players.LocalPlayer.Character:GetChildren()) do
-                    if y:IsA "Tool" then
-                        if y.Name == "Night Katana" then
-                            hit_sword("Night Katana")
-                        elseif y.Name == "Nameless Katana" and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana") and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
-                            hit_sword("Nameless Katana")
-                        elseif y.Name == "Shinsen" and 
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana") and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
-                            hit_sword("Shinsen")
-                        elseif y.Name == "Katana" and 
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana") and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Katana") and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
-                            hit_sword("Katana") 
-                        elseif y.Name == "Combat" and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana") and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Combat") and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Katana") and
-                            not game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
-                            hit_combat("Combat")
-                        end
-                    end
-                end
-            end
-        end
+    if findback("Night Katana") and not findchar("Night Katana") then
+        hit_sword("Night Katana")
+    elseif findback("Nameless Katana") and not findchar("Nameless Katana") then
+        hit_sword("Nameless Katana")
+    elseif findback("Shinsen") and not findchar("Shinsen") then
+        hit_sword("Shinsen")
+    elseif findback("Katana") and not findchar("Katana") then
+        hit_sword("Katana")
+    elseif findback("Combat") and 
+        not findchar("Combat") and
+        not findchar("Shinsen") and
+        not findchar("Nameless Katana") and
+        not findchar("Night Katana") and
+        not findchar("Katana") then
+        hit_combat("Combat")
     end
-    hit_combat("Combat")
+    if findchar("Night Katana") then
+        hit_sword("Night Katana")
+    elseif findchar("Nameless Katana") then
+        hit_sword("Nameless Katana")
+    elseif findchar("Shinsen") then
+        hit_sword("Shinsen")
+    elseif findchar("Katana") then
+        hit_sword("Katana")
+    elseif findchar("Combat") then
+        hit_combat("Combat")
+    end
 end)
 end
 end
 end)
 
 Section:NewKeybind("KeybindText", "KeybindInfo", Enum.KeyCode.Z, function()
-	print("You just clicked the bind")
 end)
 
 Section:NewButton("Random Fruit 900K", "Check", function() -- Buttton
