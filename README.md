@@ -55,8 +55,6 @@ else
 	end)
 end
 
-farm = true
-
 function Delete(v,Name)
     if v.Head:FindFirstChild(Name) then
         v.Head:FindFirstChild(Name):Destroy()
@@ -115,6 +113,9 @@ end
 
 function hit(Weapon)
     spawn(function()
+        if game.Players.LocalPlayer.Backpack:FindFirstChild(Weapon) then
+           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild(Weapon))
+        end
         game:GetService("ReplicatedStorage").Remotes.Mouse1Combat:FireServer(Weapon)
         for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
             if v.Name == Name_Mon then
@@ -165,71 +166,48 @@ function findchar(Name)
 end
 
 function Use()
-    if step == 4 then
-        if findback("Black Leg") and not findchar("Black Leg") then
-            if game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg") then
-               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg"))
+    spawn(function()
+        if _G.step == 4 then
+            if findback("Black Leg") and not findchar("Black Leg") then
+                if game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg") then
+                   game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg"))
+                end
+            elseif findback("Combat") and not findchar("Combat") and not findchar("Black Leg") then
+                if game.Players.LocalPlayer.Backpack:FindFirstChild("Combat") then
+                   game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Combat"))
+                end
             end
-        elseif findback("Combat") and not findchar("Combat") and not findchar("Black Leg") then
-            if game.Players.LocalPlayer.Backpack:FindFirstChild("Combat") then
-               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Combat"))
-            end
-        end
-    else
-        if findback("Night Katana") and not findchar("Night Katana") then
-            if game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana") then
-               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana"))
-            end
-        elseif findback("Nameless Katana") and not findchar("Nameless Katana") then
-            if game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
-               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana"))
-            end
-        elseif findback("Shinsen") and not findchar("Shinsen") then
-            if game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") then
-               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen"))
-            end
-        elseif findback("Katana") and not findchar("Katana") then
-            if game.Players.LocalPlayer.Backpack:FindFirstChild("Katana") then
-               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Katana"))
-            end
-        elseif findback("Black Leg") and 
-            not findchar("Combat") and
-            not findchar("Black Leg") and
-            not findchar("Shinsen") and
-            not findchar("Nameless Katana") and
-            not findchar("Night Katana") and
-            not findchar("Katana") then
-            if game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg") then
-               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg"))
-            end
-        elseif findback("Combat") and 
-            not findchar("Combat") and
-            not findchar("Black Leg") and
-            not findchar("Shinsen") and
-            not findchar("Nameless Katana") and
-            not findchar("Night Katana") and
-            not findchar("Katana") then
-            if game.Players.LocalPlayer.Backpack:FindFirstChild("Combat") then
-               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Combat"))
+        else
+            if findback("Night Katana") and not findchar("Night Katana") then
+                hit("Night Katana")
+            elseif findback("Nameless Katana") and not findchar("Nameless Katana") then
+                hit("Nameless Katana")
+            elseif findback("Shinsen") and not findchar("Shinsen") then
+                hit("Shinsen")
+            elseif findback("Katana") and not findchar("Katana") then
+                hit("Katana")
+            elseif findback("Black Leg") and
+                -- not findchar("Combat") and
+                -- not findchar("Shinsen") and
+                -- not findchar("Nameless Katana") and
+                -- not findchar("Night Katana") and
+                -- not findchar("Katana") and
+                not findchar("Black Leg") then
+                hit("Black Leg")
+                elseif findback("Combat") and
+                -- not findchar("Black Leg") and
+                -- not findchar("Shinsen") and
+                -- not findchar("Nameless Katana") and
+                -- not findchar("Night Katana") and
+                -- not findchar("Katana") and
+                not findchar("Combat") then
+                hit("Combat")
             end
         end
-    end
-
-    if _G.Settings.Auto_Farm then
-        if findchar("Night Katana") then
-            hit("Night Katana")
-        elseif findchar("Nameless Katana") then
-            hit("Nameless Katana")
-        elseif findchar("Shinsen") then
-            hit("Shinsen")
-        elseif findchar("Katana") then
-            hit("Katana")
-        elseif findchar("Black Leg") then
-            hit("Black Leg")
-        elseif findchar("Combat") then
-            hit("Combat")
-        end
-    elseif _G.Settings.Auto_Bounty or _G.Settings.Auto_Kill then
+        wait(.2)
+    end)
+    
+    if _G.Settings.Auto_Bounty or _G.Settings.Auto_Kill then
         if findchar("Night Katana") then
             hit_player("Night Katana")
         elseif findchar("Nameless Katana") then
@@ -246,129 +224,115 @@ function Use()
     end
 end
 
+_G.farm = true
+
 function Check()
     Level = tonumber(string.match(game.Players.LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.AverageLevel.Text,"%d+"))
-    if Level >= 0 and Level < 15 and farm then
-        step = 1
-    elseif Level >= 15 and Level < 30 and farm then
+    if Level >= 0 and Level < 15 and _G.farm then
+        _G.step = 1
+    elseif Level >= 15 and Level < 30 and _G.farm then
         Name = "Bandit Leader (Level 15)"
-        if find(Name) and findHealth(Name) and farm then
-            step = 2
+        if find(Name) and findHealth(Name) and _G.farm then
+            _G.step = 2
         else
-            step = 1
+            _G.step = 1
         end
-    elseif Level >= 30 and Level < 60 and farm then
-        step = 3
-    elseif Level >= 60 and Level < 75 and farm then
+    elseif Level >= 30 and Level < 60 and _G.farm then
+        _G.step = 3
+    elseif Level >= 60 and Level < 75 and _G.farm then
         Name = "Clown Leader (Level 60)"
-        if find(Name) and findHealth(Name) and farm then
-            step = 4
+        if find(Name) and findHealth(Name) and _G.farm then
+            _G.step = 4
         else
-            step = 3
+            _G.step = 3
         end
-    elseif Level >= 75 and Level < 90 and farm then
-        step = 5
-    elseif Level >= 90 and Level < 120 and farm then
-        step = 6
-    elseif Level >= 120 and Level < 200 and farm then
+    elseif Level >= 75 and Level < 90 and _G.farm then
+        _G.step = 5
+    elseif Level >= 90 and Level < 120 and _G.farm then
+        _G.step = 6
+    elseif Level >= 120 and Level < 200 and _G.farm then
         Name = "Gorilla (Level 120)"
-        if find(Name) and findHealth(Name) and farm then
-            step = 7
+        if find(Name) and findHealth(Name) and _G.farm then
+            _G.step = 7
         else
-            step = 6
+            _G.step = 6
         end
-    elseif Level >= 200 and Level < 275 and farm then
-        step = 8
-    elseif Level >= 275 and Level < 450 and farm then
-        step = 9
-    elseif Level >= 350 and Level < 450 and farm then
-        step = 10
-    elseif Level >= 450 and Level < 600 and farm then
-        step = 11
-    elseif Level >= 600 and Level < 800 and farm then
-        step = 12
-    elseif Level >= 800 and Level < 1000 and farm then
+    elseif Level >= 200 and Level < 275 and _G.farm then
+        _G.step = 8
+    elseif Level >= 275 and Level < 450 and _G.farm then
+        _G.step = 9
+    elseif Level >= 350 and Level < 450 and _G.farm then
+        _G.step = 10
+    elseif Level >= 450 and Level < 600 and _G.farm then
+        _G.step = 11
+    elseif Level >= 600 and Level < 800 and _G.farm then
+        _G.step = 12
+    elseif Level >= 800 and Level < 1000 and _G.farm then
         Name = "Anubis the Bone Keeper (Level 800)"
-        if find(Name) and findHealth(Name) then
-            step = 13
+        if find(Name) and findHealth(Name) and _G.farm then
+            _G.step = 13
         else
-            step = 12
+            _G.step = 12
         end
-    elseif Level >= 1000 and Level < 1100 and farm then
-        step = 14
-    elseif Level >= 1100 and Level < 1200 and farm then
-        step = 15
-    elseif Level >= 1200 and farm then
+    elseif Level >= 1000 and Level < 1100 and _G.farm then
+        _G.step = 14
+    elseif Level >= 1100 and Level < 1200 and _G.farm then
+        _G.step = 15
+    elseif Level >= 1200 and _G.farm then
         Name = "Sky Leader (Level 1200)"
         if find(Name) and findHealth(Name) then
-            step = 16
+            _G.step = 16
         else
-            step = 15
+            _G.step = 15
         end
     end
     
-    if step == 1 then
-        Boss = false
+    if _G.step == 1 then
         Name_Mon = "Bandit (Level 1)"
         CFrame_Wait = CFrame.new(-369.2081604003906, 216.5130157470703, 387.48699951171875)
-    elseif step == 2 then
-        Boss = true
+    elseif _G.step == 2 then
         Name_Mon = "Bandit Leader (Level 15)"
         CFrame_Wait = CFrame.new(-371.2571716308594, 247.01300048828125, 496.6766052246094)
-    elseif step == 3 then
-        Boss = false
+    elseif _G.step == 3 then
         Name_Mon = "Clown Pirate (Level 30)"
         CFrame_Wait = CFrame.new(-315.8768005371094, 219.99827575683594, -1497.806884765625)
-    elseif step == 4 then
-        Boss = true
+    elseif _G.step == 4 then
         Name_Mon = "Clown Leader (Level 60)"
         CFrame_Wait = CFrame.new(-321.23004150390625, 238.9982452392578, -1587.2579345703125)
-    elseif step == 5 then
-        Boss = false
+    elseif _G.step == 5 then
         Name_Mon = "Caveman (Level 75)"
         CFrame_Wait = CFrame.new(215.53306579589844, 221.99879455566406, 2216.151123046875)
-    elseif step == 6 then
-        Boss = false
+    elseif _G.step == 6 then
         Name_Mon = "Monkey (Level 90)"
         CFrame_Wait = CFrame.new(591.8125610351562, 267.9991455078125, 2251.00634765625)
-    elseif step == 7 then
-        Boss = true
+    elseif _G.step == 7 then
         Name_Mon = "Gorilla (Level 120)"
         CFrame_Wait = CFrame.new(243.0989532470703, 334.9992980957031, 2430.525390625)
-    elseif step == 8 then
-        Boss = false
+    elseif _G.step == 8 then
         Name_Mon = "Snow Bandit (Level 200)"
         CFrame_Wait = CFrame.new(-2355.30517578125, 252.4988250732422, 2219.086669921875)
-    elseif step == 9 then
-        Boss = false
+    elseif _G.step == 9 then
         Name_Mon = "Small Yeti (Level 275)"
         CFrame_Wait = CFrame.new(-2398.7294921875, 553.5922241210938, 2610.006591796875)
-    elseif step == 10 then
-        Boss = false
+    elseif _G.step == 10 then
         Name_Mon = "Yeti (Level 350)"
         CFrame_Wait = CFrame.new(-2786.235595703125, 552.5003662109375, 3006.614990234375)
-    elseif step == 11 then
-        Boss = false
+    elseif _G.step == 11 then
         Name_Mon = "Sand Bandit (Level 450)"
         CFrame_Wait = CFrame.new(-2153.0302734375, 457.39990234375, -3759.306884765625)
-    elseif step == 12 then
-        Boss = false
+    elseif _G.step == 12 then
         Name_Mon = "Pharaoh Guard (Level 600)"
         CFrame_Wait = CFrame.new(-2937.670654296875, 602.24951171875, -4605.40673828125)
-    elseif step == 13 then
-        Boss = false
+    elseif _G.step == 13 then
         Name_Mon = "Anubis the Bone Keeper (Level 800)"
         CFrame_Wait = CFrame.new(-2968.497802734375, 628.7483520507812, -4785.97216796875)
-    elseif step == 14 then
-        Boss = false
+    elseif _G.step == 14 then
         Name_Mon = "Sky Bandit (Level 1000)"
         CFrame_Wait = CFrame.new(2824.896728515625, 1837.2039794921875, -5212.48974609375)
-    elseif step == 15 then
-        Boss = false
+    elseif _G.step == 15 then
         Name_Mon = "High-Level Sky Bandit (Level 1100)"
         CFrame_Wait = CFrame.new(3277.7236328125, 1886.7039794921875, -5286.43017578125)
-    elseif step == 16 then
-        Boss = false
+    elseif _G.step == 16 then
         Name_Mon = "Sky Leader (Level 1200)"
         CFrame_Wait = CFrame.new(3083.838134765625, 1825.2039794921875, -5521.16064453125)
     end
@@ -437,7 +401,7 @@ pcall(function()
             if not findchar("Nameless Katana") and not findback("Nameless Katana") then
                 leaderstats()
                 if Money >= 1600000 then
-                    game:GetService("ReplicatedStorage").Remotes.ItemBuy:FireServer("Nameless Katana")
+                    game:GetService("ReplicatedStorage").Remotes.ItemBuy:FireServer("NamelessKatana")
                 else
                     if not findchar("Shinsen Katana") and not findback("Shinsen Katana") then
                         game:GetService("ReplicatedStorage").Remotes.ItemsEquip:FireServer("Shinsen","Equip")
@@ -770,6 +734,7 @@ Sector1:AddToggle("Spectate",_G.Settings.Spectate,function(t)
     saveSettings()
     spawn(function()
         if not _G.Settings.Spectate then
+            workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
             repeat wait()
             if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
                 game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
