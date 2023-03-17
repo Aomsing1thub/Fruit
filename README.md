@@ -1,7 +1,42 @@
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("[UPDATE 1] Fruit Warriors By. Duck Hub Version 0.1", "Synapse")
-local Tab = Window:NewTab("Main")
-local Section = Tab:NewSection("Section Name")
+_G.Settings = {
+    Auto_Farm = false,
+    Auto_Bounty = false,
+    Auto_Kill = false,
+    Spectate = false,
+    Auto_Kill = false,
+    Health = 50,
+    Auto_Random_Fruit = false
+}
+
+local a = "Duck HUB"
+local b = "Game.lua"
+function saveSettings()
+    local c = game:GetService("HttpService")
+    local d = c:JSONEncode(_G.Settings)
+    if writefile then
+        if isfolder(a) then
+            writefile(a .. "\\" .. b, d)
+        else
+            makefolder(a)
+            writefile(a .. "\\" .. b, d)
+        end
+    end
+end
+function loadSettings()
+    local c = game:GetService("HttpService")
+    if isfile(a .. "\\" .. b) then
+        _G.Settings = c:JSONDecode(readfile(a .. "\\" .. b))
+    end
+end
+
+loadSettings()
+Name_GUI = "Duck HUB"
+local Ui = game:GetService("CoreGui"):FindFirstChild(Name_GUI)
+if Ui then
+    Ui:Destroy()
+end
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/naypramx/Ui__Project/Script/XeNonUi", true))()
+local CenterHubNo1 = library:CreateWindow("[UPDATE 1] Fruit Warriors By. Duck Hub Version 0.1 🙂",Enum.KeyCode.RightControl)
 
 local GC = getconnections or get_signal_cons
 if GC then
@@ -153,7 +188,7 @@ function Use()
         end
     end
 
-    if Auto_Farm then
+    if _G.Settings.Auto_Farm then
         if findchar("Night Katana") then
             hit("Night Katana")
         elseif findchar("Nameless Katana") then
@@ -167,7 +202,7 @@ function Use()
         elseif findchar("Combat") then
             hit("Combat")
         end
-    elseif Auto_Bounty or Auto_Kill then
+    elseif _G.Settings.Auto_Bounty or _G.Settings.Auto_Kill then
         if findchar("Night Katana") then
             hit_player("Night Katana")
         elseif findchar("Nameless Katana") then
@@ -312,10 +347,44 @@ function Check()
     end
 end
 
-Section:NewToggle("Auto Farm", "ToggleInfo", function(state)
-    Auto_Farm = state
-    Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,150,0)
-    if not Auto_Farm then
+function Change(String)
+    Display = {}
+    Name = {}
+    
+    for i,v in pairs(game:GetService("Players"):GetChildren()) do
+       table.insert(Display,v.DisplayName)
+       table.insert(Name,v.Name)
+    end
+    
+    for i,v in pairs (Display) do
+        if String == v then
+            return Name[i]
+        end
+    end
+end
+
+function GetPlayer(String)
+    local Found = {}
+    local strl = String:lower()
+       for i,v in pairs(game.Players:GetPlayers()) do
+            if v ~= game.Players.LocalPlayer then
+                if v.Name:lower():sub(1, #String) == String:lower() then
+                    table.insert(Found,v.Name)
+                elseif v.DisplayName:lower():sub(1, #String) == String:lower() then
+                    table.insert(Found,v.DisplayName)
+                end
+            end
+       end    
+    return Found[1] 
+end
+
+local Tab = CenterHubNo1:CreateTab("Auto Farm")
+local Sector1 = Tab:CreateSector("Auto Farm","left")
+
+Sector1:AddToggle("Auto Farm",_G.Settings.Auto_Farm,function(t)
+    _G.Settings.Auto_Farm = t
+    saveSettings()
+    if not _G.Settings.Auto_Farm then
         repeat wait()
         if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
             game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
@@ -324,92 +393,9 @@ Section:NewToggle("Auto Farm", "ToggleInfo", function(state)
     end
 end)
 
-Section:NewToggle("Auto Random Fruit", "ToggleInfo", function(state)
-    Auto_Buy = state
-end)
-
-Section:NewToggle("Auto Farm Bounty", "ToggleInfo", function(state)
-    Auto_Bounty = state
-    if not Auto_Bounty then
-        repeat wait()
-        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
-            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
-        end
-        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
-    end
-end)        
-
-num = 2
-
 spawn(function()
 while wait() do
-if Auto_Bounty then
-pcall(function()
-    for i,v in pairs (game.Players:GetChildren()) do
-        if i == num then
-            gg = v.Character.Humanoid.Health
-            wait(2)
-            gg1 = v.Character.Humanoid.Health
-            if gg <= gg1 then
-                num = num + 1
-            end
-        end
-    end
-    if num >= Max then
-        num = 2
-    end
-end)
-end
-end
-end)
-
-spawn(function()
-while wait() do
-if Auto_Bounty then
-pcall(function()
-    GodMode()
-    Use()
-    Max = #game.Players:GetChildren()
-    for i,v in pairs (game.Players:GetChildren()) do
-        if i == num then
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0,10,0)
-            if v.Character.Humanoid.Health <= 0 then
-                num = num + 1
-            end
-        end
-    end
-end)
-end
-end
-end)
-
-spawn(function()
-while wait() do
-if Auto_Farm or Auto_Bounty then
-pcall(function()
-    if not game.Players.LocalPlayer.Character["Left Arm"]:FindFirstChild("HakiPart") then
-        game:GetService("VirtualInputManager"):SendKeyEvent(true,106,false,game.Players.LocalPlayer.Character.HumanoidRootPart)
-        game:GetService("VirtualInputManager"):SendKeyEvent(false,106,false,game.Players.LocalPlayer.Character.HumanoidRootPart)
-        wait(.5)
-        if not game.Players.LocalPlayer.Character["Left Arm"]:FindFirstChild("HakiPart") then
-            Defense = string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Defense.Text,"%d+")
-            Strength = string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Strength.Text,"%d+")
-            gg = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.PC.OnScreen.Beli.Text,",","")
-            gg1 = string.gsub(gg,"B$ | ","")
-            Money = tonumber(gg1)
-            if Defense >= 100 and Strength >= 100 and Money >= 100000 then
-                game:GetService("ReplicatedStorage").Remotes.LearnAbilities:FireServer("ArmamentHaki")
-            end
-        end
-    end
-end)
-end
-end
-end)
-
-spawn(function()
-while wait() do
-if Auto_Farm then
+if _G.Settings.Auto_Farm then
 pcall(function()
     GodMode()
     Check()
@@ -420,17 +406,22 @@ pcall(function()
             stop = true
             for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
                 if v.Name == Name_Mon then
-                    if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid").Health > 0 then
-                        if not v.HumanoidRootPart:FindFirstChild("GGEZ") then
-                            local Noclip = Instance.new("BodyVelocity")
-                            Noclip.Name = "GGEZ"
-                            Noclip.Parent = v.HumanoidRootPart
-                            Noclip.MaxForce = Vector3.new(100000,100000,100000)
-                            Noclip.Velocity = Vector3.new(0,0,0)
+                    if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") then
+                        if v.Humanoid:FindFirstChild("Animator") then
+                            v.Humanoid:FindFirstChild("Animator"):Destroy()
                         end
-                        Wait = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,150,0)
-                        stop = false
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,15,0)
+                        if v:FindFirstChild("Humanoid").Health > 0 then
+                            if not v.HumanoidRootPart:FindFirstChild("GGEZ") then
+                                local Noclip = Instance.new("BodyVelocity")
+                                Noclip.Name = "GGEZ"
+                                Noclip.Parent = v.HumanoidRootPart
+                                Noclip.MaxForce = Vector3.new(100000,100000,100000)
+                                Noclip.Velocity = Vector3.new(0,0,0)
+                            end
+                            Wait =  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,150,0)
+                            stop = false
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,15,0)
+                        end
                     end
                 end
             end
@@ -451,7 +442,7 @@ end)
 
 spawn(function()
 while task.wait() do
-if Auto_Farm then
+if _G.Settings.Auto_Farm then
 pcall(function()
     for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
         if v.Name == Name_Mon then
@@ -474,8 +465,42 @@ end
 end)
 
 spawn(function()
+while task.wait() do
+if _G.Settings.Auto_Farm or _G.Settings.Auto_Bounty then
+pcall(function()
+    if not game.Players.LocalPlayer.Character["Left Arm"]:FindFirstChild("HakiPart") then
+        game:GetService("VirtualInputManager"):SendKeyEvent(true,106,false,game.Players.LocalPlayer.Character.HumanoidRootPart)
+        game:GetService("VirtualInputManager"):SendKeyEvent(false,106,false,game.Players.LocalPlayer.Character.HumanoidRootPart)
+        wait(.5)
+        if not game.Players.LocalPlayer.Character["Left Arm"]:FindFirstChild("HakiPart") then
+            Defense = string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Defense.Text,"%d+")
+            Strength = string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Strength.Text,"%d+")
+            gg = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.PC.OnScreen.Beli.Text,",","")
+            gg1 = string.gsub(gg,"B$ | ","")
+            Money = tonumber(gg1)
+            if Defense >= 100 and Strength >= 100 and Money >= 100000 then
+                game:GetService("ReplicatedStorage").Remotes.LearnAbilities:FireServer("ArmamentHaki")
+            end
+        end
+    end
+end)
+end
+end
+end)
+
+spawn(function()
+while task.wait() do
+if _G.Settings.Auto_Farm then
+pcall(function()
+    
+end)
+end
+end
+end)
+
+spawn(function()
 while wait() do
-if Auto_Farm or Auto_Bounty or Auto_Kill then
+if _G.Settings.Auto_Bounty or _G.Settings.Auto_Farm or _G.Settings.Auto_Kill then
 pcall(function()
     if not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
         local Noclip = Instance.new("BodyVelocity")
@@ -491,7 +516,7 @@ end)
 
 spawn(function()
 while wait() do
-if Auto_Farm then
+if _G.Settings.Auto_Farm then
 pcall(function()
     for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
         if v.Name == Name_Mon then
@@ -505,120 +530,147 @@ end
 end
 end)
 
+Sector1:AddToggle("Auto Farm Mastery ยังไม่เสร็จ",_G.Settings.Auto_Farm_Mastery,function(t)
+    _G.Settings.Auto_Farm_Mastery = t
+    saveSettings()
+    if not _G.Settings.Auto_Farm_Mastery then
+        repeat wait()
+        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+        end
+        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
+    end
+end)
+
 spawn(function()
 while wait() do
-if Auto_Buy then
+if _G.Settings.Auto_Farm_Mastery then
 pcall(function()
-gg = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.PC.OnScreen.Beli.Text,",","")
-gg1 = string.gsub(gg,"B$ | ","")
-Money = tonumber(gg1)
-    if Money >= 10000000 and Money > 9100000 then
-        game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("3","Beli")
-    end
+    
 end)
 end
 end
 end)
 
-Section:NewButton("Random Fruit 900K", "Check", function() -- Buttton
-game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("3","Beli")
-end)
-
-Section:NewButton("Random Fruit 250K", "Check", function() -- Buttton
-game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("2","Beli")
-end)
-
-Section:NewKeybind("KeybindText", "KeybindInfo", Enum.KeyCode.RightControl, function() -- Key OPEN/CLOSE
-	Library:ToggleUI()
-end)
-
-local Tab = Window:NewTab("Players")
-local Section = Tab:NewSection("Section Name")
-
-function Change(String)
-    Display = {}
-    Name = {}
-    
-    for i,v in pairs(game:GetService("Players"):GetChildren()) do
-       table.insert(Display,v.DisplayName)
-       table.insert(Name,v.Name)
-    end
-    
-    for i,v in pairs (Display) do
-        if String == v then
-            return Name[i]
+Sector1:AddToggle("Auto Farm Bounty",_G.Settings.Auto_Bounty,function(t)
+    _G.Settings.Auto_Bounty = t
+    saveSettings()
+    if not _G.Settings.Auto_Bounty then
+        repeat wait()
+        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
         end
+        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
     end
-end
+end)
 
-players = {}
+num = 2
 
-for i,v in pairs(game:GetService("Players"):GetChildren()) do
-   table.insert(players,v.DisplayName)
-end
-
-function GetPlayer(String)
-    local Found = {}
-    local strl = String:lower()
-       for i,v in pairs(game.Players:GetPlayers()) do
-            if v ~= game.Players.LocalPlayer then
-                if v.Name:lower():sub(1, #String) == String:lower() then
-                    table.insert(Found,v.Name)
-                elseif v.DisplayName:lower():sub(1, #String) == String:lower() then
-                    table.insert(Found,v.DisplayName)
-                end
+spawn(function()
+while wait() do
+if _G.Settings.Auto_Bounty then
+pcall(function()
+    for i,v in pairs (game.Players:GetChildren()) do
+        if i == num then
+            gg = v.Character.Humanoid.Health
+            wait(2)
+            gg1 = v.Character.Humanoid.Health
+            if gg <= gg1 then
+                num = num + 1
             end
-       end    
-    return Found[1] 
+        end
+    end
+    if num >= Max then
+        num = 2
+    end
+end)
 end
-
-Section:NewTextBox("Name Players", " ", function(txt)
-    Select = GetPlayer(txt)
-end)
-
-Section:NewToggle("Auto Kill", "ToggleInfo", function(state)
-    Auto_Kill = state
-    if not Auto_Kill then
-        repeat wait()
-        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
-            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
-        end
-        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
-    end
-end)
-
-Section:NewToggle("Spectate", "ToggleInfo", function(state)
-    sp = state
-    if not Auto_Kill then
-        workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
-        repeat wait()
-        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
-            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
-        end
-        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
-    end
+end
 end)
 
 spawn(function()
 while wait() do
-if sp then
+if _G.Settings.Auto_Bounty then
 pcall(function()
-workspace.CurrentCamera.CameraSubject = game.Players[Change(Select)].Character.Humanoid
+    GodMode()
+    Use()
+    Max = #game.Players:GetChildren()
+    for i,v in pairs (game.Players:GetChildren()) do
+        if i == num then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0,10,0)
+            if v.Character.Humanoid.Health <= 0 then
+                num = num + 1
+            end
+        end
+    end
 end)
 end
 end
 end)
 
-Section:NewButton("Teleport", "Check", function() -- Buttton
-    if Select == nil then
-    else
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[Change(Select)].Character.HumanoidRootPart.CFrame
+Sector1:AddToggle("SAFE MODE",_G.Settings.Safe_Mode,function(t)
+    _G.Settings.Safe_Mode = t
+    saveSettings()
+    if not _G.Settings.Safe_Mode then
+        repeat wait()
+        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+        end
+        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
+    end
+end)
+
+Sector1:AddSlider("Select % Health",30,_G.Settings.Health,100,1,function(x)
+    _G.Settings.Health = x
+    saveSettings()
+end)
+
+spawn(function()
+while wait() do
+if _G.Settings.Safe_Mode then
+pcall(function()
+    MaxHealth = game.Players.LocalPlayer.Character.Humanoid.MaxHealth
+    Health = game.Players.LocalPlayer.Character.Humanoid.Health
+    Result = (MaxHealth * _G.Settings.Health) / 100
+    if Health < Result then
+        if not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+            local Noclip = Instance.new("BodyVelocity")
+            Noclip.Name = "GGEZ"
+            Noclip.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
+            Noclip.MaxForce = Vector3.new(100000,100000,100000)
+            Noclip.Velocity = Vector3.new(0,0,0)
+        end
+        x = math.random(-1000,1000)
+        z = math.random(-1000,1000)
+        me = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(x,me.Y,z)
+    end
+end)
+end
+end
+end)
+
+local Sector1 = Tab:CreateSector("Auto Kill","right")
+
+Sector1:AddTextbox("Name Player ",false,function(t)
+    Select = GetPlayer(t)
+end)
+
+Sector1:AddToggle("Auto Kill",_G.Settings.Auto_Kill,function(t)
+    _G.Settings.Auto_Kill = t
+    saveSettings()
+    if not _G.Settings.Auto_Kill then
+        repeat wait()
+        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+        end
+        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
     end
 end)
 
 spawn(function()
 while wait() do
-if Auto_Kill then
+if _G.Settings.Auto_Kill then
 pcall(function()
     Use()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[Change(Select)].Character.HumanoidRootPart.CFrame * CFrame.new(0,10,0)
@@ -627,8 +679,91 @@ end
 end
 end)
 
-local Tab = Window:NewTab("Teleport")
-local Section = Tab:NewSection("Section Name")
+Sector1:AddToggle("Spectate",_G.Settings.Spectate,function(t)
+    _G.Settings.Spectate = t
+    saveSettings()
+    if not _G.Settings.Spectate then
+        repeat wait()
+        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+        end
+        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
+    end
+end)
+
+spawn(function()
+while wait() do
+if _G.Settings.Spectate then
+pcall(function()
+workspace.CurrentCamera.CameraSubject = game.Players[Change(Select)].Character.Humanoid
+end)
+end
+end
+end)
+
+Sector1:AddButton("Teleport",function()
+    if not Select == nil then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[Change(Select)].Character.HumanoidRootPart.CFrame
+    end
+end)
+
+local Sector1 = Tab:CreateSector("Auto Buy","left")
+
+Sector1:AddDropdown("Select Stage",{"Stage 1 25K B$","Stage 2 250K B$","Stage 3 900K B$"},"Stage 3 B$",false,function(t)
+    Stage = t
+end)
+
+Sector1:AddToggle("Auto Random Fruit ",_G.Settings.Auto_Random_Fruit,function(t)
+    _G.Settings.Auto_Random_Fruit = t
+    saveSettings()
+    if not _G.Settings.Auto_Random_Fruit then
+        repeat wait()
+        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+        end
+        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
+    end
+end)
+
+spawn(function()
+while wait() do
+if _G.Settings.Auto_Random_Fruit then
+pcall(function()
+gg = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.PC.OnScreen.Beli.Text,",","")
+gg1 = string.gsub(gg,"B$ | ","")
+Money = tonumber(gg1)
+    if Stage == "Stage 3 900K B$" then
+        if Money >= 10000000 and Money > 9100000 then
+            game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("3","Beli")
+        end
+    elseif Stage == "Stage 2 250K B$" then
+        if Money >= 10000000 and Money > 10000000 - 250000 then
+            game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("2","Beli")
+        end
+    elseif Stage == "Stage 1 25K B$" then
+        if Money >= 10000000 and Money > 10000000 - 25000 then
+            game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("1","Beli")
+        end
+    end
+end)
+end
+end
+end)
+
+Sector1:AddButton("Stage 3 900K B$",function()
+    game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("3","Beli")
+end)
+
+Sector1:AddButton("Stage 2 250K B$",function()
+    game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("2","Beli")
+end)
+
+Sector1:AddButton("Stage 1 25K B$",function()
+    game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("1","Beli")
+end)
+
+local Tab = CenterHubNo1:CreateTab("Teleport")
+local Sector1 = Tab:CreateSector("Place","left")
 
 Places = {}
 
@@ -638,8 +773,8 @@ for i,v in pairs (game:GetService("Workspace").Map:GetChildren()) do
     end
 end
 
-Section:NewDropdown("Select Place", " ", Places, function(abc)
-    Place = abc
+Sector1:AddDropdown("Select Place",Places,"Rookie Town",false,function(t)
+    Place = t
     if Place == "Rookie Town" then
         GoTo = CFrame.new(-368.315673828125, 217.0130615234375, 283.4286193847656)
     elseif Place == "Snow Island" then
@@ -667,9 +802,8 @@ Section:NewDropdown("Select Place", " ", Places, function(abc)
     end
 end)
 
-Section:NewButton("Teleport", "Check", function() -- Buttton
-    if GoTo == nil then
-    else
+Sector1:AddButton("Teleport",function()
+    if not GoTo == nil then
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = GoTo
     end
 end)
