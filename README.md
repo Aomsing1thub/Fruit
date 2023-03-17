@@ -98,6 +98,21 @@ function GodMode()
     end)
 end
 
+function leaderstats()
+    Defense = tonumber(string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Defense.Text,"%d+"))
+    Strength = tonumber(string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Strength.Text,"%d+"))
+    Stamina = tonumber(string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Stamina.Text,"%d+"))
+    Fruit = tonumber(string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Fruit.Text,"%d+"))
+    Haki = tonumber(string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Haki.Text,"%d+"))
+    Level = tonumber(string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.AverageLevel.Text,"%d+"))
+    gg1 = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.PC.OnScreen.Beli.Text,",","")
+    gg2 = string.gsub(gg1,"B$ | ","")
+    Money = tonumber(gg2)
+    gg3 = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.PC.OnScreen.Token.Text,",","")
+    gg4 = string.gsub(gg3,"T$ | ","")
+    Token = tonumber(gg4)
+end
+
 function hit(Weapon)
     spawn(function()
         game:GetService("ReplicatedStorage").Remotes.Mouse1Combat:FireServer(Weapon)
@@ -150,41 +165,53 @@ function findchar(Name)
 end
 
 function Use()
-    if findback("Night Katana") and not findchar("Night Katana") then
-        if game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana") then
-           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana"))
+    if step == 4 then
+        if findback("Black Leg") and not findchar("Black Leg") then
+            if game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg") then
+               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg"))
+            end
+        elseif findback("Combat") and not findchar("Combat") and not findchar("Black Leg") then
+            if game.Players.LocalPlayer.Backpack:FindFirstChild("Combat") then
+               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Combat"))
+            end
         end
-    elseif findback("Nameless Katana") and not findchar("Nameless Katana") then
-        if game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
-           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana"))
-        end
-    elseif findback("Shinsen") and not findchar("Shinsen") then
-        if game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") then
-           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen"))
-        end
-    elseif findback("Katana") and not findchar("Katana") then
-        if game.Players.LocalPlayer.Backpack:FindFirstChild("Katana") then
-           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Katana"))
-        end
-    elseif findback("Black Leg") and 
-        not findchar("Combat") and
-        not findchar("Black Leg") and
-        not findchar("Shinsen") and
-        not findchar("Nameless Katana") and
-        not findchar("Night Katana") and
-        not findchar("Katana") then
-        if game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg") then
-           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg"))
-        end
-    elseif findback("Combat") and 
-        not findchar("Combat") and
-        not findchar("Black Leg") and
-        not findchar("Shinsen") and
-        not findchar("Nameless Katana") and
-        not findchar("Night Katana") and
-        not findchar("Katana") then
-        if game.Players.LocalPlayer.Backpack:FindFirstChild("Combat") then
-           game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Combat"))
+    else
+        if findback("Night Katana") and not findchar("Night Katana") then
+            if game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana") then
+               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Night Katana"))
+            end
+        elseif findback("Nameless Katana") and not findchar("Nameless Katana") then
+            if game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana") then
+               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Nameless Katana"))
+            end
+        elseif findback("Shinsen") and not findchar("Shinsen") then
+            if game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen") then
+               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Shinsen"))
+            end
+        elseif findback("Katana") and not findchar("Katana") then
+            if game.Players.LocalPlayer.Backpack:FindFirstChild("Katana") then
+               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Katana"))
+            end
+        elseif findback("Black Leg") and 
+            not findchar("Combat") and
+            not findchar("Black Leg") and
+            not findchar("Shinsen") and
+            not findchar("Nameless Katana") and
+            not findchar("Night Katana") and
+            not findchar("Katana") then
+            if game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg") then
+               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Black Leg"))
+            end
+        elseif findback("Combat") and 
+            not findchar("Combat") and
+            not findchar("Black Leg") and
+            not findchar("Shinsen") and
+            not findchar("Nameless Katana") and
+            not findchar("Night Katana") and
+            not findchar("Katana") then
+            if game.Players.LocalPlayer.Backpack:FindFirstChild("Combat") then
+               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Combat"))
+            end
         end
     end
 
@@ -384,13 +411,67 @@ local Sector1 = Tab:CreateSector("Auto Farm","left")
 Sector1:AddToggle("Auto Farm",_G.Settings.Auto_Farm,function(t)
     _G.Settings.Auto_Farm = t
     saveSettings()
-    if not _G.Settings.Auto_Farm then
-        repeat wait()
-        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
-            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+    spawn(function()
+        if not _G.Settings.Auto_Farm then
+            repeat wait()
+            if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+                game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+            end
+            until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
         end
-        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
+    end)
+end)
+
+spawn(function()
+while wait() do
+if _G.Settings.Auto_Farm then
+pcall(function()
+    leaderstats()
+    
+    if not findchar("Night Katana") and not findback("Night Katana") then
+        game:GetService("ReplicatedStorage").Remotes.ItemsEquip:FireServer("Night Katana","Equip")
+        wait(.5)
+        if not findchar("Night Katana") and not findback("Night Katana") then
+            game:GetService("ReplicatedStorage").Remotes.ItemsEquip:FireServer("Nameless Katana","Equip")
+            wait(.5)
+            if not findchar("Nameless Katana") and not findback("Nameless Katana") then
+                leaderstats()
+                if Money >= 1600000 then
+                    game:GetService("ReplicatedStorage").Remotes.ItemBuy:FireServer("Nameless Katana")
+                else
+                    if not findchar("Shinsen Katana") and not findback("Shinsen Katana") then
+                        game:GetService("ReplicatedStorage").Remotes.ItemsEquip:FireServer("Shinsen","Equip")
+                        wait(.5)
+                        if not findchar("Shinsen") and not findback("Shinsen") then
+                            leaderstats()
+                            if Money >= 1200000 then
+                                game:GetService("ReplicatedStorage").Remotes.ItemBuy:FireServer("Shinsen")
+                            else
+                                if not findchar("Katana") and not findback("Katana") then
+                                    game:GetService("ReplicatedStorage").Remotes.ItemsEquip:FireServer("Katana","Equip")
+                                    wait(.5)
+                                    if not findchar("Katana") and not findback("Katana") then
+                                        leaderstats()
+                                        if Money >= 5000 then
+                                            game:GetService("ReplicatedStorage").Remotes.ItemBuy:FireServer("Katana")
+                                        end
+                                    end
+                                end 
+                            end
+                        end
+                    end
+                end
+            end
+        end
     end
+    if not findchar("Black Leg") and not findback("Black Leg") then
+        if Strength >= 50 and Stamina >= 50 and Money >= 50000 then
+            game:GetService("ReplicatedStorage").Remotes.FightingStyleLearn:FireServer("Black Leg")
+        end
+    end
+end)
+end
+end
 end)
 
 spawn(function()
@@ -421,6 +502,7 @@ pcall(function()
                             Wait =  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,150,0)
                             stop = false
                             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,15,0)
+                            wait(.15)
                         end
                     end
                 end
@@ -473,11 +555,7 @@ pcall(function()
         game:GetService("VirtualInputManager"):SendKeyEvent(false,106,false,game.Players.LocalPlayer.Character.HumanoidRootPart)
         wait(.5)
         if not game.Players.LocalPlayer.Character["Left Arm"]:FindFirstChild("HakiPart") then
-            Defense = string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Defense.Text,"%d+")
-            Strength = string.match(game:GetService("Players").LocalPlayer.PlayerGui.Stats.Main.Frame.StatsContainer.Strength.Text,"%d+")
-            gg = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.PC.OnScreen.Beli.Text,",","")
-            gg1 = string.gsub(gg,"B$ | ","")
-            Money = tonumber(gg1)
+            leaderstats()
             if Defense >= 100 and Strength >= 100 and Money >= 100000 then
                 game:GetService("ReplicatedStorage").Remotes.LearnAbilities:FireServer("ArmamentHaki")
             end
@@ -533,13 +611,15 @@ end)
 Sector1:AddToggle("Auto Farm Mastery ยังไม่เสร็จ",_G.Settings.Auto_Farm_Mastery,function(t)
     _G.Settings.Auto_Farm_Mastery = t
     saveSettings()
-    if not _G.Settings.Auto_Farm_Mastery then
-        repeat wait()
-        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
-            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+    spawn(function()
+        if not _G.Settings.Auto_Farm_Mastery then
+            repeat wait()
+            if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+                game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+            end
+            until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
         end
-        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
-    end
+    end)
 end)
 
 spawn(function()
@@ -555,13 +635,15 @@ end)
 Sector1:AddToggle("Auto Farm Bounty",_G.Settings.Auto_Bounty,function(t)
     _G.Settings.Auto_Bounty = t
     saveSettings()
-    if not _G.Settings.Auto_Bounty then
-        repeat wait()
-        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
-            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+    spawn(function()
+        if not _G.Settings.Auto_Bounty then
+            repeat wait()
+            if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+                game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+            end
+            until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
         end
-        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
-    end
+    end)
 end)
 
 num = 2
@@ -611,13 +693,15 @@ end)
 Sector1:AddToggle("SAFE MODE",_G.Settings.Safe_Mode,function(t)
     _G.Settings.Safe_Mode = t
     saveSettings()
-    if not _G.Settings.Safe_Mode then
-        repeat wait()
-        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
-            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+    spawn(function()
+        if not _G.Settings.Safe_Mode then
+            repeat wait()
+            if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+                game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+            end
+            until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
         end
-        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
-    end
+    end)
 end)
 
 Sector1:AddSlider("Select % Health",30,_G.Settings.Health,100,1,function(x)
@@ -659,13 +743,15 @@ end)
 Sector1:AddToggle("Auto Kill",_G.Settings.Auto_Kill,function(t)
     _G.Settings.Auto_Kill = t
     saveSettings()
-    if not _G.Settings.Auto_Kill then
-        repeat wait()
-        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
-            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+    spawn(function()
+        if not _G.Settings.Auto_Kill then
+            repeat wait()
+            if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+                game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+            end
+            until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
         end
-        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
-    end
+    end)
 end)
 
 spawn(function()
@@ -682,13 +768,15 @@ end)
 Sector1:AddToggle("Spectate",_G.Settings.Spectate,function(t)
     _G.Settings.Spectate = t
     saveSettings()
-    if not _G.Settings.Spectate then
-        repeat wait()
-        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
-            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+    spawn(function()
+        if not _G.Settings.Spectate then
+            repeat wait()
+            if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+                game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+            end
+            until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
         end
-        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
-    end
+    end)
 end)
 
 spawn(function()
@@ -716,13 +804,15 @@ end)
 Sector1:AddToggle("Auto Random Fruit ",_G.Settings.Auto_Random_Fruit,function(t)
     _G.Settings.Auto_Random_Fruit = t
     saveSettings()
-    if not _G.Settings.Auto_Random_Fruit then
-        repeat wait()
-        if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
-            game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+    spawn(function()
+        if not _G.Settings.Auto_Random_Fruit then
+            repeat wait()
+            if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
+                game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
+            end
+            until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
         end
-        until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
-    end
+    end)
 end)
 
 spawn(function()
