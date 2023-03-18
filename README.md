@@ -5,11 +5,13 @@ _G.Settings = {
     Spectate = false,
     Auto_Kill = false,
     Health = 50,
-    Auto_Random_Fruit = false
+    Auto_Random_Fruit = false,
+    Auto_Store_Fruit = false,
+    Aimbot = false
 }
 
 local a = "Duck HUB"
-local b = "Game.lua"
+local b = game.Players.LocalPlayer.Name..".lua"
 function saveSettings()
     local c = game:GetService("HttpService")
     local d = c:JSONEncode(_G.Settings)
@@ -22,6 +24,7 @@ function saveSettings()
         end
     end
 end
+
 function loadSettings()
     local c = game:GetService("HttpService")
     if isfile(a .. "\\" .. b) then
@@ -67,6 +70,7 @@ function Tw(v,CF)
     -- tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear)
     -- tween = tweenService:Create(v.Head.Handle, tweenInfo, {CFrame = CF})
     -- tween:Play()
+    v.HumanoidRootPart.CFrame = CF
     v.Head.Handle.CFrame = CF
 end
 
@@ -331,7 +335,7 @@ function Check()
         CFrame_Wait = CFrame.new(2824.896728515625, 1837.2039794921875, -5212.48974609375)
     elseif _G.step == 15 then
         Name_Mon = "High-Level Sky Bandit (Level 1100)"
-        CFrame_Wait = CFrame.new(3277.7236328125, 1886.7039794921875, -5286.43017578125)
+        CFrame_Wait = CFrame.new(3273.7890625, 1887.7042236328125, -5280.36328125)
     elseif _G.step == 16 then
         Name_Mon = "Sky Leader (Level 1200)"
         CFrame_Wait = CFrame.new(3083.838134765625, 1825.2039794921875, -5521.16064453125)
@@ -438,13 +442,27 @@ end
 end
 end)
 
+function get_fruit()
+    for i,v in pairs (game.Players.LocalPlayer.Backpack:GetChildren()) do
+        if v:FindFirstChild("Main") and not v:FindFirstChild("LocalBlackLegHandler") and not v:FindFirstChild("Handle") then
+            if not game.Players.LocalPlayer.Character:FindFirstChild(v.Name) then
+               game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild(v.Name))
+            end
+        end
+    end
+end
+
+function findHealthper(v,per)
+    Max = (v.Humanoid.MaxHealth * per) / 100
+    return Max
+end
+
 spawn(function()
 while wait() do
 if _G.Settings.Auto_Farm then
 pcall(function()
     GodMode()
     Check()
-    Use()
     
     if tostring(game.Players.LocalPlayer.PlayerGui.Quests.Main.Position) == "{0, 0}, {0, 0}" and string.find(game.Players.LocalPlayer.PlayerGui.Quests.Main.Handler.QuestObject.Text,"(Level "..string.match(Name_Mon,"%d+")..")") then
         spawn(function()
@@ -456,17 +474,29 @@ pcall(function()
                             v.Humanoid:FindFirstChild("Animator"):Destroy()
                         end
                         if v:FindFirstChild("Humanoid").Health > 0 then
-                            if not v.HumanoidRootPart:FindFirstChild("GGEZ") then
-                                local Noclip = Instance.new("BodyVelocity")
-                                Noclip.Name = "GGEZ"
-                                Noclip.Parent = v.HumanoidRootPart
-                                Noclip.MaxForce = Vector3.new(100000,100000,100000)
-                                Noclip.Velocity = Vector3.new(0,0,0)
+                            if _G.Settings.Auto_Farm_Mastery then
+                                if v:FindFirstChild("Humanoid").Health < findHealthper(v,10) then
+                                    get_fruit()
+                                    stop = false
+                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,15,0)
+                                    hit_skill(v)
+                                else
+                                    Use()
+                                    Wait =  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,150,0)
+                                    stop = false
+                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,15,0)
+                                end
+                            else
+                                Use()
+                                wait(.2)
+                                Wait =  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,150,0)
+                                stop = false
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,15,0)
+                                wait(.2)
+                                if v:FindFirstChild("Humanoid").Health < findHealthper(v,70) and v:FindFirstChild("Humanoid").Health > findHealthper(v,20) then
+                                hit_skill(v)
+                                end
                             end
-                            Wait =  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,150,0)
-                            stop = false
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,15,0)
-                            wait(.15)
                         end
                     end
                 end
@@ -531,16 +561,6 @@ end
 end)
 
 spawn(function()
-while task.wait() do
-if _G.Settings.Auto_Farm then
-pcall(function()
-    
-end)
-end
-end
-end)
-
-spawn(function()
 while wait() do
 if _G.Settings.Auto_Bounty or _G.Settings.Auto_Farm or _G.Settings.Auto_Kill then
 pcall(function()
@@ -563,7 +583,16 @@ pcall(function()
     for i,v in pairs(game:GetService("Workspace").Mobs:GetChildren()) do -- GetDescendants
         if v.Name == Name_Mon then
             if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid").Health > 0 then
-                Tw(v,CFrame_Wait)
+                if (v.HumanoidRootPart.Position - CFrame_Wait.Position).Magnitude <= 50 then
+                    Tw(v,CFrame_Wait)
+                    if not v.HumanoidRootPart:FindFirstChild("GGEZ") then
+                        local Noclip = Instance.new("BodyVelocity")
+                        Noclip.Name = "GGEZ"
+                        Noclip.Parent = v.HumanoidRootPart
+                        Noclip.MaxForce = Vector3.new(100000,100000,100000)
+                        Noclip.Velocity = Vector3.new(0,0,0)
+                    end
+                end
             end
         end
     end
@@ -572,7 +601,7 @@ end
 end
 end)
 
-Sector1:AddToggle("Auto Farm Mastery ยังไม่เสร็จ",_G.Settings.Auto_Farm_Mastery,function(t)
+Sector1:AddToggle("Auto Farm Mastery",_G.Settings.Auto_Farm_Mastery,function(t)
     _G.Settings.Auto_Farm_Mastery = t
     saveSettings()
     spawn(function()
@@ -586,15 +615,44 @@ Sector1:AddToggle("Auto Farm Mastery ยังไม่เสร็จ",_G.Setti
     end)
 end)
 
-spawn(function()
-while wait() do
-if _G.Settings.Auto_Farm_Mastery then
-pcall(function()
+function VFX(Name_Skill,Target)
+local args = {
+    [1] = Name_Skill,
+    [2] = {
+        ["Status"] = "Charge",
+        ["MouseTarget"] = Target,
+        ["MousePos"] = Target.Position
+    }
+}
+
+game:GetService("ReplicatedStorage").Remotes.VFX:FireServer(unpack(args))
+local args = {
+    [1] = Name_Skill,
+    [2] = {
+        ["Status"] = "Release",
+        ["MouseTarget"] = Target,
+        ["MousePos"] = Target.Position
+    }
+}
+
+game:GetService("ReplicatedStorage").Remotes.VFX:FireServer(unpack(args))
+end
+
+function hit_skill(Target)
+    w = {}
     
-end)
+    for i,v in pairs (game.Players.LocalPlayer.Character:GetChildren()) do
+        if v:IsA "Tool" then
+            for i,x in pairs (v.Main:GetChildren()) do
+                table.insert(w,x)
+            end
+        end
+    end
+    
+    for i,Mon in pairs (w) do
+        VFX(Mon.Name,Target.HumanoidRootPart)
+    end
 end
-end
-end)
 
 Sector1:AddToggle("Auto Farm Bounty",_G.Settings.Auto_Bounty,function(t)
     _G.Settings.Auto_Bounty = t
@@ -623,6 +681,8 @@ pcall(function()
             gg1 = v.Character.Humanoid.Health
             if gg <= gg1 then
                 num = num + 1
+            else
+                hit_skill(v.Character)
             end
         end
     end
@@ -735,11 +795,6 @@ Sector1:AddToggle("Spectate",_G.Settings.Spectate,function(t)
     spawn(function()
         if not _G.Settings.Spectate then
             workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
-            repeat wait()
-            if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
-                game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
-            end
-            until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
         end
     end)
 end)
@@ -754,50 +809,99 @@ end
 end
 end)
 
-Sector1:AddButton("Teleport",function()
-    if not Select == nil then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[Change(Select)].Character.HumanoidRootPart.CFrame
+Sector1:AddToggle("Aimbot",_G.Settings.Aimbot,function(t)
+    _G.Settings.Aimbot = t
+    saveSettings()
+    spawn(function()
+        if not _G.Settings.Aimbot then
+            
+        end
+    end)
+end)
+
+local old
+old = hookmetamethod(game,"__namecall",function(self,...)
+    local args = {...}
+    if getnamecallmethod() == "FireServer" and tostring(self) == "VFX" then
+        if typeof(args[2]) == "table" and args[2]["MousePos"] then
+            if typeof(args[2]["MousePos"]) == "Vector3" and _G.Settings.Aimbot then
+                args[2]["MousePos"] = _G.MobTarget.Position
+                args[2]["MouseTarget"] = _G.MobTarget
+                 return old(self,unpack(args))
+            end
+        end
     end
+    return old(self,...)
+end)
+
+spawn(function()
+while wait() do
+if _G.Settings.Aimbot then
+pcall(function()
+    _G.MobTarget = game.Players[Select].Character.HumanoidRootPart
+end)
+end
+end
+end)
+
+Sector1:AddButton("Teleport",function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[Change(Select)].Character.HumanoidRootPart.CFram
 end)
 
 local Sector1 = Tab:CreateSector("Auto Buy","left")
-
-Sector1:AddDropdown("Select Stage",{"Stage 1 25K B$","Stage 2 250K B$","Stage 3 900K B$"},"Stage 3 B$",false,function(t)
+Stage = "Stage 3 900K B$"
+Sector1:AddDropdown("Select Stage",{"Stage 1 25K B$","Stage 2 250K B$","Stage 3 900K B$"},"Stage 3 900K B$",false,function(t)
     Stage = t
 end)
 
 Sector1:AddToggle("Auto Random Fruit ",_G.Settings.Auto_Random_Fruit,function(t)
     _G.Settings.Auto_Random_Fruit = t
     saveSettings()
-    spawn(function()
-        if not _G.Settings.Auto_Random_Fruit then
-            repeat wait()
-            if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ") then
-                game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ"):Destroy()
-            end
-            until not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GGEZ")
-        end
-    end)
 end)
 
 spawn(function()
 while wait() do
 if _G.Settings.Auto_Random_Fruit then
 pcall(function()
-gg = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.PC.OnScreen.Beli.Text,",","")
-gg1 = string.gsub(gg,"B$ | ","")
-Money = tonumber(gg1)
+    gg = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.PC.OnScreen.Beli.Text,",","")
+    gg1 = string.gsub(gg,"B$ | ","")
+    Money = tonumber(gg1)
     if Stage == "Stage 3 900K B$" then
         if Money >= 10000000 and Money > 9100000 then
             game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("3","Beli")
+            repeat wait(1)
+            until Money > 9100000
         end
     elseif Stage == "Stage 2 250K B$" then
         if Money >= 10000000 and Money > 10000000 - 250000 then
             game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("2","Beli")
+            repeat wait(1)
+            until Money > 10000000 - 250000
         end
     elseif Stage == "Stage 1 25K B$" then
         if Money >= 10000000 and Money > 10000000 - 25000 then
             game:GetService("ReplicatedStorage").Remotes.FruitRoll:FireServer("1","Beli")
+            repeat wait(1)
+            until Money > 10000000 - 25000
+        end
+    end
+end)
+end
+end
+end)
+
+Sector1:AddToggle("Auto Store Fruit ",_G.Settings.Auto_Store_Fruit,function(t)
+    _G.Settings.Auto_Store_Fruit = t
+    saveSettings()
+end)
+
+spawn(function()
+while wait() do
+if _G.Settings.Auto_Store_Fruit then
+pcall(function()
+    for i,v in pairs (game.Players.LocalPlayer.Backpack:GetChildren()) do
+        if string.find(v.Name,"Fruit") then
+            game:GetService("ReplicatedStorage").Remotes.FruitHandler:FireServer(v.Name,"Store")
         end
     end
 end)
@@ -858,7 +962,5 @@ Sector1:AddDropdown("Select Place",Places,"Rookie Town",false,function(t)
 end)
 
 Sector1:AddButton("Teleport",function()
-    if not GoTo == nil then
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = GoTo
-    end
 end)
